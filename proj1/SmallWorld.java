@@ -45,6 +45,9 @@ public class SmallWorld {
     // Skeleton code uses this to share denom cmd-line arg across cluster
     public static final String DENOM_PATH = "denom.txt";
 
+    //Number of Starting Points
+    public static int numOfStartingPoints = 0;
+
     // Example enumerated type, used by EValue and Counter example
     public static enum ValueUse {EDGE};
 
@@ -154,6 +157,7 @@ public class SmallWorld {
                                       1+value.toString().indexOf('-'));
 	                if(!sPointList.contains(sPoint)) {
 			    sPointList=sPointList.concat(sPoint);
+			    numOfStartingPoints = numOfStartingPoints + 1;
 		            context.write(key, value);
 		        }
 		    }
@@ -339,7 +343,7 @@ public class SmallWorld {
 
         // Input from command-line argument, output to predictable place
         FileInputFormat.addInputPath(job, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job, new Path("bfs-0-out"));
+        FileOutputFormat.setOutputPath(job, new Path("temp/bfs-0-out"));
 
         // Actually starts job, and waits for it to finish
         job.waitForCompletion(true);
@@ -351,8 +355,9 @@ public class SmallWorld {
 
         // Repeats your BFS mapreduce
         int i=0;
-        // Will need to change terminating conditions to respond to data
-        while (i<5) {
+        //Get out of the loop once processed all starting points
+	//And No more than 20 literations
+        while (i<MAX_ITERATIONS && i<numOfStartingPoints) {
             job = new Job(conf, "bfs" + i);
             job.setJarByClass(SmallWorld.class);
 
@@ -368,8 +373,8 @@ public class SmallWorld {
             job.setOutputFormatClass(SequenceFileOutputFormat.class);
 
             // Notice how each mapreduce job gets gets its own output dir
-            FileInputFormat.addInputPath(job, new Path("bfs-" + i + "-out"));
-            FileOutputFormat.setOutputPath(job, new Path("bfs-"+ (i+1) +"-out"));
+            FileInputFormat.addInputPath(job, new Path("temp/bfs-" + i + "-out"));
+            FileOutputFormat.setOutputPath(job, new Path("temp/bfs-"+ (i+1) +"-out"));
 
             job.waitForCompletion(true);
             i++;
@@ -393,7 +398,7 @@ public class SmallWorld {
 
         // By declaring i above outside of loop conditions, can use it
         // here to get last bfs output to be input to histogram
-        FileInputFormat.addInputPath(job, new Path("bfs-"+ i +"-out"));
+        FileInputFormat.addInputPath(job, new Path("temp/bfs-"+ i +"-out"));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         job.waitForCompletion(true);

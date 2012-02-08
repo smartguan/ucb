@@ -1,0 +1,57 @@
+    demo2.jpg is the screen shot of the execution after I finished implementing the "Transform.cpp" code and successfully use my own "lookAt" function to view the rotated teapot. 
+
+
+Below are the codes for "rotate" and "lookAt":
+
+
+
+
+mat3 Transform::rotate(const float degrees, const vec3& axis) {
+  mat3 R ; 
+  // FILL IN YOUR CODE HERE
+  float angR = degrees*pi/180; //Calculate for the radiun
+  //Normalize the vecter
+  float mag = sqrt(axis.x*axis.x + axis.y*axis.y + axis.z*axis.z);
+  vec3 norR = axis/mag;
+  
+  //Rotate about norR
+  R = mat3(1,0,0,0,1,0,0,0,1)*cos(angR)
+	  + sin(angR)*mat3(0, -norR.z, norR.y,
+	                   norR.z, 0, -norR.x,
+					   -norR.y, norR.x, 0)
+	  + (1-cos(angR))*mat3(norR.x*norR, norR.y*norR, norR.z*norR);
+  return R ;
+}
+
+
+
+
+mat4 Transform::lookAt(vec3 eye, vec3 up) {
+    mat4 M ; 
+
+	//FILL IN YOUR CODE HERE
+    //You must return a row-major mat4 M that you create from this routine
+	vec3 z = glm::normalize(eye);
+	vec3 x = glm::normalize(glm::cross(up, z));
+	vec3 y = glm::cross(z, x);
+	   
+	//In row major                 right-axis       , magInRightDirection    
+	//Form the translation matrix  up-axis          , magInUpDirection
+	//                             depth-axis(out)  , magInOutDirection
+	//                             0,0,0,1
+	//Note: GL_MODELVIEW takes in column-major matrix
+	M = mat4(x.x, x.y, x.z, -glm::dot(x, eye),
+		     y.x, y.y, y.z, -glm::dot(y, eye),
+			 z.x, z.y, z.z, -glm::dot(z, eye),
+			 0, 0, 0, 1);
+
+	return M ; 
+}
+
+
+     
+
+Cheers, 
+
+Seth Guan
+     

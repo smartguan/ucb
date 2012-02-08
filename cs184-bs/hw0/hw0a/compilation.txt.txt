@@ -1,0 +1,16 @@
+
+     I'm really into this computer Graphic stuff because I like playing games and to play a game developped by myself has been my dream for a long time. 
+
+     I used to play around SDL and OpenGL a lot with some online tutorials such as NeHe's, by using glaux. At that time I was so delighted that maths can be applied, in real life, even though I got little insight.
+    
+     I'm going to spend lots of time on this class and hopefully I can come up with my own game at the end.
+
+
+Something about hw0b 
+    demo2.jpg is the screen shot of the execution after I finished implementing the "Transform.cpp" code and successfully use my own "lookAt" function to view the rotated teapot. 
+
+
+Cheers, 
+
+Seth Guan
+     

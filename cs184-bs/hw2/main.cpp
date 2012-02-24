@@ -257,9 +257,9 @@ void keyboard(unsigned char key, int x, int y) {
 				if(light_position[i][3] != 0)  
 					lightposvec[i] = vec3(light_position[i][0], light_position[i][1], light_position[i][2]);
 				else lightposvec[i] = vec3(-light_position[i][0], -light_position[i][1], -light_position[i][2]);
-				lightposup[i] = up;
+				lightposup[i] = upinit;
 			}
-			std::memcpy(light_pos, light_position, sizeof(light_position)+1);
+			std::memcpy(light_pos, light_position, sizeof(light_position));
 			
 			break ;   
         case 'v': 
@@ -418,7 +418,7 @@ void init() {
 		else lightposvec[m] = vec3(-light_position[m][0], -light_position[m][1], -light_position[m][2]);
 		lightposup[m] = up;
 	}
-	std::memcpy(light_pos, light_position, sizeof(light_position)+1);
+	std::memcpy(light_pos, light_position, sizeof(light_position));
 	
 	//init scale and translate
     for(m=0;m<31;m++) {
